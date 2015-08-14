@@ -40,8 +40,13 @@ set number
 set wrap
 
 "" almost like no syntax highlighting
-syntax on
-colorscheme vi-clone
+if filereadable(expand("$HOME/.vim/colors/vi-clone.vim"))
+  syntax on
+  colorscheme vi-clone
+else
+  syntax off
+endif
+
 
 "" clear out the cruft
 set nobackup
@@ -138,13 +143,13 @@ nmap <C-@> :ascii<CR>
 " Note that you can't insert a Tab in the middle of a line by pressing
 " Tab any more, but you can by pressing <C-V><Tab>.
 function! CleverTab()
-	if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
-		return "\<Tab>"
-	else
-		return "\<C-N>"
+  if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
+    return "\<Tab>"
+  else
+    return "\<C-N>"
 endfunction
+
 inoremap <Tab> <C-R>=CleverTab()<CR>
 
 " Copy buffered text to X11 clipboard
 nmap <A-c> :let @* = @"<CR>
-

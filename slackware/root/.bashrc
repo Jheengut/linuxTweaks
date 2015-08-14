@@ -1,18 +1,10 @@
 
-parse_git_branch() {
-  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
-}
+## i could check for ~/.bash_profile before sourcing it,
+## but i want to know if it is missing
+. ~/.bash_profile
 
-export PS1='\u@\w:$(parse_git_branch)\$ '
-alias slu='slackpkg update gpg && slackpkg update && slackpkg install-new && slackpkg upgrade-all && slackpkg clean-system'
-
-LFS=/mnt/lfs
-
-## check if tmux is running before running it
-if [ ! $(ps -e | grep -q tmux) ]; then
+## check if $TMUX is set before running it
+if [ -z "$TMUX" ]; then
   exec tmux -u
-  ## makes history work as expected in tmux
-  export PROMPT_COMMAND="history -a"
-  shopt -s histappend
 fi
 
