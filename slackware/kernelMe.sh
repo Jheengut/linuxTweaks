@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Script to automate kernel compilation
-# Ryan P.C. McQuen | Everett, WA | ryan.q@linux.com
+# Ryan P. C. McQuen | Everett, WA | ryanpcmcquen@member.fsf.org
 #
 ################################
 ### TO INSTALL/USE (MAKE SURE YOU ARE ROOT!):
@@ -12,7 +12,7 @@
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 3 of the License, or
+# the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version, with the following exception:
 # the text of the GPL license may be omitted.
 #
@@ -26,7 +26,7 @@
 #
 # You may have received a copy of the GNU General Public License
 # along with this program (most likely, a file named COPYING). If
-# not, see <http://www.gnu.org/licenses/>.
+# not, see <https://www.gnu.org/licenses/>.
 #
 # Place this script in /usr/src, chmod +x it to make it executable
 #
@@ -34,7 +34,7 @@
 # Slightly modified by Willy Sudiarto Raharjo <willysr@gmail.com>
 #
 ##
-## even further m0dz by Ryan P.C. McQuen  ;-)
+## even further m0dz by Ryan P. C. McQuen  ;-)
 ## with lots of help from Thorn Inurcide
 ##
 if [ ! $UID = 0 ]; then
@@ -49,15 +49,15 @@ if [ -z "$1" ]; then
   wget https://www.kernel.org/ -O ~/linux-kernel-home-page.html
 
   ## mainline version
-  cat ~/linux-kernel-home-page.html  | grep -A1 mainline: | head -2 | tail -1 | cut -d'>' -f3 | cut -d'<' -f1 \
+  grep -A1 mainline: ~/linux-kernel-home-page.html | head -2 | tail -1 | cut -d'>' -f3 | cut -d'<' -f1 \
     > ~/mainlineKernelVersion
 
   ## stable version
-  cat ~/linux-kernel-home-page.html  | grep -A1 stable: | head -2 | tail -1 | cut -d'>' -f3 | cut -d'<' -f1 \
+  grep -A1 stable: ~/linux-kernel-home-page.html | head -2 | tail -1 | cut -d'>' -f3 | cut -d'<' -f1 \
     > ~/stableKernelVersion
 
   ## longterm version
-  cat ~/linux-kernel-home-page.html  | grep -A1 longterm: | head -2 | tail -1 | cut -d'>' -f3 | cut -d'<' -f1 \
+  grep -A1 longterm: ~/linux-kernel-home-page.html | head -2 | tail -1 | cut -d'>' -f3 | cut -d'<' -f1 \
     > ~/longtermKernelVersion
 
   ## set VERSION
@@ -121,13 +121,14 @@ CWD='/usr/src'
 cd $CWD
 
 ## grab the kernel
-wget -N https://www.kernel.org/pub/linux/kernel/v3.x/linux-$VERSION.tar.xz -P /usr/src/ \
-  || wget -N https://www.kernel.org/pub/linux/kernel/v4.x/linux-$VERSION.tar.xz -P /usr/src/ \
-  || wget -N https://www.kernel.org/pub/linux/kernel/v4.x/testing/linux-$VERSION.tar.xz -P /usr/src/
+wget -N https://www.kernel.org/pub/linux/kernel/v4.x/linux-$VERSION.tar.xz -P /usr/src/ \
+  || wget -N https://www.kernel.org/pub/linux/kernel/v4.x/testing/linux-$VERSION.tar.xz -P /usr/src/ \
+  || wget -N https://www.kernel.org/pub/linux/kernel/v3.x/linux-$VERSION.tar.xz -P /usr/src/
 
 ## check if wget failed
 if [ $? -ne 0 ]; then
   echo "Version number is bunk, try again."
+  echo
   exit 1
 fi
 
